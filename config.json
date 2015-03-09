@@ -1,0 +1,7 @@
+{
+  "root": ".",
+  "go": {
+    "bin": "./bin/nw-sql",
+    "db": "./users.db"
+  }
+}

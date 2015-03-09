@@ -1,3 +1,9 @@
 node_modules
 example/build
 *.log
+
+build
+src/github.com
+pkg
+users.db
+bin/*

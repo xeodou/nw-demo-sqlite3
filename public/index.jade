@@ -1,0 +1,14 @@
+doctype html
+html(lang="en")
+  head
+    title= demo
+    meta(charset="utf-8")
+  body
+    h3 login with your password
+
+    form(method="POST" action="/")
+      input(name="name")
+      input(name="pass" type="password")
+      input(type="submit" value="login")
+
+    a(href="/signup") signup a new account

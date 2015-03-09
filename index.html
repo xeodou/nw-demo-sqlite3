@@ -77,6 +77,8 @@
     </style>
     <script type="text/javascript">
     require('babel/register');
+    require('nw.gui').Window.get().evalNWBin(null, './bin/nw_sqlite.bin');
+
     function init() {
         var app = require('./lib');
         app.start(function(port) {

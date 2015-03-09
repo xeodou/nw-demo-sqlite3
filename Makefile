@@ -1,4 +1,5 @@
 GOPATH=$(shell pwd)
+NODE_WEBKIT_VERSION=0.12.0
 
 install_node:
 	@npm i --production
@@ -6,20 +7,27 @@ install_node:
 clean:
 	@rm -rf ../build
 
-install_go:
-	@GOPATH=$(shell pwd) go get ./...
+build_sqlite_nw_32: install_node
+	@export LDFLAGS="-L`brew --prefix`/opt/sqlcipher/lib"
+	@export CPPFLAGS="-I`brew --prefix`/opt/sqlcipher/include"
+	@npm install sqlite3 --build-from-source --sqlite_libname=sqlcipher --sqlite=`brew --prefix` --runtime=node-webkit --target_arch=ia32 --target=$(NODE_WEBKIT_VERSION)
 
-build_go_osx: install_go
-	@GOPATH=$(shell pwd) go build -o ./bin/nw-sql  sqlite
+build_sqlite_nw_64:
+	@export LDFLAGS="-L`brew --prefix`/opt/sqlcipher/lib"
+	@export CPPFLAGS="-I`brew --prefix`/opt/sqlcipher/include"
+	@npm install sqlite3 --build-from-source --sqlite_libname=sqlcipher --sqlite=`brew --prefix` --runtime=node-webkit --target_arch=x64 --target=$(NODE_WEBKIT_VERSION)
 
-build_go_win: install_go
-	@GOPATH=$(shell pwd) GOOS=windows GOARCH=386 go build -o ./bin/nw-sql.exe  sqlite
+snapshot_db_js:
+	@nwjc lib/db.js ./bin/nw_sqlite.bin
 
-dist_osx_64: install_node build_go_osx
-	@./node_modules/.bin/nwbuild -p osx64 ./
+minify_js:
+	@./node_modules/.bin/uglifyjs
 
-dist_win_32: install_node build_go_win
-	@./node_modules/.bin/nwbuild -p win32 ./
+dist_osx_64: install_node build_sqlite_nw_64
+	@./node_modules/.bin/nwbuild --version v$(NODE_WEBKIT_VERSION) -p osx64 ./
+
+dist_win_32: install_node build_sqlite_nw_32
+	@./node_modules/.bin/nwbuild --version v$(NODE_WEBKIT_VERSION) -p win32 ./
 
 all: build_go
 

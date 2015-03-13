@@ -40,7 +40,7 @@ minify_js:
 dist_osx_64: clean install_node build_sqlite_nw_64 dist snapshot_db_js
 	@./node_modules/.bin/nwbuild --version v$(NODE_WEBKIT_VERSION) -p osx64 ./dist
 
-dist_win_32: install_node build_sqlite_nw_32 dist snapshot_db_js
+dist_win_32: clean install_node build_sqlite_nw_32 dist snapshot_db_js
 	@./node_modules/.bin/nwbuild --version v$(NODE_WEBKIT_VERSION) -p win32 ./dist
 
 all: build_go
